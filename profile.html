@@ -353,10 +353,10 @@
         document.getElementById('avatarRemove').classList.add('visible');
       }
 
-      // Set status
-      const savedStatus = profile?.status || 'online';
-      document.querySelectorAll('.status-option').forEach(opt => {
-        opt.classList.toggle('active', opt.dataset.status === savedStatus);
+      // Set class
+      const savedClass = profile?.status || 'explorer';
+      document.querySelectorAll('.class-option').forEach(opt => {
+        opt.classList.toggle('active', opt.dataset.class === savedClass);
       });
     }
 
@@ -374,10 +374,10 @@
       document.getElementById('bioCount').textContent = e.target.value.length;
     });
 
-    // Status selection
-    document.querySelectorAll('.status-option').forEach(opt => {
+    // Class selection
+    document.querySelectorAll('.class-option').forEach(opt => {
       opt.addEventListener('click', () => {
-        document.querySelectorAll('.status-option').forEach(o => o.classList.remove('active'));
+        document.querySelectorAll('.class-option').forEach(o => o.classList.remove('active'));
         opt.classList.add('active');
       });
     });
@@ -441,7 +441,7 @@
       const fullName = document.getElementById('inputName').value.trim();
       const bio = document.getElementById('inputBio').value.trim();
       const gender = document.getElementById('inputGender').value;
-      const status = document.querySelector('.status-option.active')?.dataset.status || 'online';
+      const status = document.querySelector('.class-option.active')?.dataset.class || 'explorer';
 
       // Update auth metadata
       const { error: metaErr } = await supabase.auth.updateUser({ data: { full_name: fullName } });
