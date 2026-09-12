@@ -199,8 +199,8 @@
     // Auth check
     const { data: { session } } = await supabase.auth.getSession();
     if (!session) {
-      window.location.href = 'auth.html';
-      throw new Error('Not authenticated');
+      window.location.replace('auth.html');
+      return;
     }
 
     const currentUser = session.user;
