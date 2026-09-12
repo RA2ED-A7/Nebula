@@ -89,7 +89,7 @@
       <aside class="sidebar">
         <div class="tabs">
           <button class="tab active" data-tab="primary">Primary</button>
-          <button class="tab" data-tab="general">General</button>
+          <button class="tab" data-tab="general">Group Chats</button>
           <button class="tab" data-tab="requests" id="requestsTab">Requests <span class="tab-badge" id="requestsBadge" style="display:none;">0</span></button>
         </div>
 
@@ -186,6 +186,19 @@
           </div>
         </div>
       </main>
+    </div>
+  </div>
+
+  <!-- Profile Popup -->
+  <div class="profile-popup-overlay" id="profilePopupOverlay">
+    <div class="profile-popup">
+      <button class="profile-popup-close" id="profilePopupClose">&times;</button>
+      <div class="profile-popup-banner" id="profilePopupBanner"></div>
+      <div class="profile-popup-avatar" id="profilePopupAvatar"></div>
+      <div class="profile-popup-name" id="profilePopupName"></div>
+      <div class="profile-popup-email" id="profilePopupEmail"></div>
+      <div class="profile-popup-bio" id="profilePopupBio"></div>
+      <div class="profile-popup-actions" id="profilePopupActions"></div>
     </div>
   </div>
 
@@ -326,7 +339,7 @@
         }
 
         return `
-          <div class="search-result">
+          <div class="search-result" data-user-id="${p.id}" data-user-name="${name}" data-user-email="${p.email}" data-user-gradient="${gradient}">
             <div class="avatar">
               <div class="avatar-img" style="background: ${gradient}; color: white;">${initial}</div>
             </div>
@@ -362,6 +375,67 @@
             btn.textContent = 'Add Friend';
             btn.disabled = false;
           }
+        });
+      });
+
+      // Bind profile clicks (click name/avatar to view profile)
+      searchDropdown.querySelectorAll('.search-result').forEach(el => {
+        el.querySelector('.search-result-info').addEventListener('click', async (e) => {
+          e.stopPropagation();
+          searchDropdown.classList.remove('open');
+          searchInput.value = '';
+
+          const userId = el.dataset.userId;
+          const userName = el.dataset.userName;
+          const userEmail = el.dataset.userEmail;
+          const userGradient = el.dataset.userGradient;
+
+          const { data: profile } = await supabase.from('profiles').select('*').eq('id', userId).single();
+
+          const popup = document.getElementById('profilePopupOverlay');
+          const banner = document.getElementById('profilePopupBanner');
+          const avatar = document.getElementById('profilePopupAvatar');
+          const nameEl = document.getElementById('profilePopupName');
+          const emailEl = document.getElementById('profilePopupEmail');
+          const bioEl = document.getElementById('profilePopupBio');
+          const actionsEl = document.getElementById('profilePopupActions');
+
+          banner.style.background = userGradient;
+          avatar.innerHTML = `<div class="avatar-img" style="background: ${userGradient}; color: white; width: 72px; height: 72px; font-size: 1.8rem; border: 4px solid var(--bg-primary); border-radius: 50%;">${userName.charAt(0).toUpperCase()}</div>`;
+          nameEl.textContent = profile?.full_name || userName;
+          emailEl.textContent = userEmail;
+          bioEl.textContent = profile?.bio || '';
+          bioEl.style.display = profile?.bio ? '' : 'none';
+
+          let actionsHtml = '';
+          if (userId !== currentUser.id) {
+            const friendCheck = await supabase.from('friend_profiles').select('profile_id').eq('profile_id', userId).maybeSingle();
+            const reqCheck = await supabase.from('friend_requests').select('status').eq('sender_id', currentUser.id).eq('receiver_id', userId).maybeSingle();
+            if (friendCheck.data) {
+              actionsHtml = '<span style="color: var(--text-muted); font-size: 0.85rem;">You are friends</span>';
+            } else if (reqCheck.data) {
+              actionsHtml = '<span style="color: var(--text-muted); font-size: 0.85rem;">Request pending</span>';
+            } else {
+              actionsHtml = `<button class="btn btn-primary profile-add-friend-btn" data-id="${userId}">Add Friend</button>`;
+            }
+          }
+          actionsEl.innerHTML = actionsHtml;
+
+          actionsEl.querySelector('.profile-add-friend-btn')?.addEventListener('click', async (btnEvt) => {
+            btnEvt.target.textContent = 'Sending...';
+            btnEvt.target.disabled = true;
+            const { error } = await supabase.from('friend_requests').insert({ sender_id: currentUser.id, receiver_id: userId, status: 'pending' });
+            if (!error) {
+              btnEvt.target.textContent = 'Request pending';
+              btnEvt.target.className = '';
+              btnEvt.target.style.cssText = 'color: var(--text-muted); font-size: 0.85rem;';
+            } else {
+              btnEvt.target.textContent = 'Add Friend';
+              btnEvt.target.disabled = false;
+            }
+          });
+
+          popup.classList.add('open');
         });
       });
     }
@@ -601,6 +675,14 @@
     sendBtn.addEventListener('click', sendMessage);
     msgInput.addEventListener('keydown', e => {
       if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+    });
+
+    // Profile popup close
+    document.getElementById('profilePopupClose').addEventListener('click', () => {
+      document.getElementById('profilePopupOverlay').classList.remove('open');
+    });
+    document.getElementById('profilePopupOverlay').addEventListener('click', (e) => {
+      if (e.target === e.currentTarget) e.currentTarget.classList.remove('open');
     });
 
     // ===== SETTINGS =====
