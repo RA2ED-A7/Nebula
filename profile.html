@@ -320,6 +320,7 @@
     const SUPABASE_KEY = 'sb_publishable_yIg8_s1__WPGVR_BMD4b_w_akKmWH_I';
     const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
+    (async () => {
     const { data: { session } } = await supabase.auth.getSession();
     if (!session) { window.location.replace('auth.html'); return; }
     const user = session.user;
@@ -469,6 +470,7 @@
       btn.textContent = 'Save Changes';
       setTimeout(() => msg.className = 'msg', 3000);
     });
+    })();
   </script>
 </body>
 </html>

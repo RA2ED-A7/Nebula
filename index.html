@@ -196,6 +196,7 @@
     const SUPABASE_KEY = 'sb_publishable_yIg8_s1__WPGVR_BMD4b_w_akKmWH_I';
     const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
+    (async () => {
     // Auth check
     const { data: { session } } = await supabase.auth.getSession();
     if (!session) {
@@ -604,6 +605,7 @@
       const { error } = await supabase.auth.admin.deleteUser(currentUser.id);
       if (!error) { await supabase.auth.signOut(); window.location.href = 'auth.html'; }
     });
+    })();
   </script>
 
   <!-- Settings Modal -->
