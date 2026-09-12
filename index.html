@@ -83,108 +83,16 @@
         <button class="tab">Requests</button>
       </div>
 
-      <div class="conversations">
-        <!-- Conversation 1 - Active -->
-        <div class="conversation active">
-          <div class="avatar">
-            <div class="avatar-img" style="background: linear-gradient(135deg, #7c3aed, #ec4899); color: white;">A</div>
-            <div class="online-dot"></div>
-          </div>
-          <div class="conversation-info">
-            <div class="conversation-name">Aria Chen</div>
-            <div class="conversation-preview">Sent you a photo</div>
-          </div>
-          <div class="conversation-meta">
-            <span class="conversation-time">2m</span>
-            <div class="unread-badge">2</div>
-          </div>
-        </div>
-
-        <!-- Conversation 2 -->
-        <div class="conversation">
-          <div class="avatar">
-            <div class="avatar-img" style="background: linear-gradient(135deg, #22d3ee, #7c3aed); color: white;">M</div>
-            <div class="online-dot"></div>
-          </div>
-          <div class="conversation-info">
-            <div class="conversation-name">Marcus Rivera</div>
-            <div class="conversation-preview">That looks amazing!</div>
-          </div>
-          <div class="conversation-meta">
-            <span class="conversation-time">15m</span>
-          </div>
-        </div>
-
-        <!-- Conversation 3 -->
-        <div class="conversation">
-          <div class="avatar">
-            <div class="avatar-img" style="background: linear-gradient(135deg, #ec4899, #f59e0b); color: white;">L</div>
-          </div>
-          <div class="conversation-info">
-            <div class="conversation-name">Luna Park</div>
-            <div class="conversation-preview">Let me know when you're free</div>
-          </div>
-          <div class="conversation-meta">
-            <span class="conversation-time">1h</span>
-            <div class="unread-badge">1</div>
-          </div>
-        </div>
-
-        <!-- Conversation 4 -->
-        <div class="conversation">
-          <div class="avatar">
-            <div class="avatar-img" style="background: linear-gradient(135deg, #22c55e, #22d3ee); color: white;">K</div>
-          </div>
-          <div class="conversation-info">
-            <div class="conversation-name">Kai Nakamura</div>
-            <div class="conversation-preview">Check out this code</div>
-          </div>
-          <div class="conversation-meta">
-            <span class="conversation-time">3h</span>
-          </div>
-        </div>
-
-        <!-- Conversation 5 -->
-        <div class="conversation">
-          <div class="avatar">
-            <div class="avatar-img" style="background: linear-gradient(135deg, #f59e0b, #ef4444); color: white;">S</div>
-          </div>
-          <div class="conversation-info">
-            <div class="conversation-name">Sage Williams</div>
-            <div class="conversation-preview">Haha that's so cool</div>
-          </div>
-          <div class="conversation-meta">
-            <span class="conversation-time">5h</span>
-          </div>
-        </div>
-
-        <!-- Conversation 6 -->
-        <div class="conversation">
-          <div class="avatar">
-            <div class="avatar-img" style="background: linear-gradient(135deg, #a855f7, #22d3ee); color: white;">R</div>
-            <div class="online-dot"></div>
-          </div>
-          <div class="conversation-info">
-            <div class="conversation-name">Ravi Patel</div>
-            <div class="conversation-preview">Thanks for the help!</div>
-          </div>
-          <div class="conversation-meta">
-            <span class="conversation-time">8h</span>
-          </div>
-        </div>
-
-        <!-- Conversation 7 -->
-        <div class="conversation">
-          <div class="avatar">
-            <div class="avatar-img" style="background: linear-gradient(135deg, #ef4444, #ec4899); color: white;">E</div>
-          </div>
-          <div class="conversation-info">
-            <div class="conversation-name">Elena Moretti</div>
-            <div class="conversation-preview">See you tomorrow!</div>
-          </div>
-          <div class="conversation-meta">
-            <span class="conversation-time">1d</span>
-          </div>
+      <div class="conversations" id="conversationsList">
+        <div class="empty-state" id="emptyFriends">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.3;">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+          <p>No friends yet</p>
+          <span>Add friends to start chatting</span>
         </div>
       </div>
     </aside>
@@ -331,19 +239,71 @@
       window.location.href = 'auth.html';
     });
 
+    // Gradient palette for avatars
+    const gradients = [
+      'linear-gradient(135deg, #7c3aed, #ec4899)',
+      'linear-gradient(135deg, #22d3ee, #7c3aed)',
+      'linear-gradient(135deg, #ec4899, #f59e0b)',
+      'linear-gradient(135deg, #22c55e, #22d3ee)',
+      'linear-gradient(135deg, #f59e0b, #ef4444)',
+      'linear-gradient(135deg, #a855f7, #22d3ee)',
+      'linear-gradient(135deg, #ef4444, #ec4899)',
+      'linear-gradient(135deg, #06b6d4, #8b5cf6)',
+    ];
+
+    // Fetch and render friends
+    const conversationsList = document.getElementById('conversationsList');
+    const emptyFriends = document.getElementById('emptyFriends');
+
+    async function loadFriends() {
+      const { data: friends, error } = await supabase
+        .from('friend_profiles')
+        .select('*');
+
+      // Clear existing conversations (keep empty state)
+      conversationsList.querySelectorAll('.conversation').forEach(c => c.remove());
+
+      if (!friends || friends.length === 0) {
+        emptyFriends.style.display = 'flex';
+        return;
+      }
+
+      emptyFriends.style.display = 'none';
+
+      friends.forEach((friend, i) => {
+        const name = friend.full_name || friend.email.split('@')[0];
+        const initial = name.charAt(0).toUpperCase();
+        const gradient = gradients[i % gradients.length];
+
+        const conv = document.createElement('div');
+        conv.className = 'conversation';
+        conv.innerHTML = `
+          <div class="avatar">
+            <div class="avatar-img" style="background: ${gradient}; color: white;">${initial}</div>
+          </div>
+          <div class="conversation-info">
+            <div class="conversation-name">${name}</div>
+            <div class="conversation-preview">Start a conversation</div>
+          </div>
+          <div class="conversation-meta">
+            <span class="conversation-time">New</span>
+          </div>
+        `;
+        conv.addEventListener('click', () => {
+          conversationsList.querySelectorAll('.conversation').forEach(c => c.classList.remove('active'));
+          conv.classList.add('active');
+        });
+        conversationsList.appendChild(conv);
+      });
+    }
+
+    await loadFriends();
+
     // Tab switching
     document.querySelectorAll('.tab').forEach(tab => {
       tab.addEventListener('click', () => {
         document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
         tab.classList.add('active');
-      });
-    });
-
-    // Conversation switching
-    document.querySelectorAll('.conversation').forEach(conv => {
-      conv.addEventListener('click', () => {
-        document.querySelectorAll('.conversation').forEach(c => c.classList.remove('active'));
-        conv.classList.add('active');
       });
     });
 
