@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nebula - Edit Profile</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg: #0a0a14; --bg2: #12121f; --bg3: #1a1a2e; --hover: #22223a;
+      --accent: #7c3aed; --accent2: #a855f7; --pink: #ec4899; --cyan: #22d3ee;
+      --text: #f0f0f5; --dim: #9ca3af; --muted: #6b7280;
+      --border: rgba(124, 58, 237, 0.15); --border-sub: rgba(255,255,255,0.05);
+      --glow: rgba(124, 58, 237, 0.3); --radius: 16px; --radius-sm: 12px; --radius-xs: 8px;
+    }
+    body {
+      font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text);
+      min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden;
+    }
+    body::before {
+      content: ''; position: fixed; inset: -50%; width: 200%; height: 200%;
+      background: radial-gradient(ellipse at 30% 40%, rgba(124,58,237,0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 70% 60%, rgba(168,85,247,0.05) 0%, transparent 50%);
+      pointer-events: none; z-index: 0;
+    }
+
+    /* Top bar */
+    .top-bar {
+      height: 56px; background: var(--bg2); border-bottom: 1px solid var(--border-sub);
+      display: flex; align-items: center; padding: 0 24px; gap: 16px; position: relative; z-index: 2;
+    }
+    .back-btn {
+      display: flex; align-items: center; gap: 8px; background: none; border: none;
+      color: var(--dim); font-family: inherit; font-size: 0.9rem; cursor: pointer;
+      transition: color 0.15s; padding: 6px 10px; border-radius: var(--radius-xs);
+    }
+    .back-btn:hover { color: var(--text); background: var(--hover); }
+    .back-btn svg { width: 18px; height: 18px; }
+    .top-bar-title { font-size: 1rem; font-weight: 600; }
+
+    /* Profile container */
+    .profile-editor {
+      flex: 1; display: flex; justify-content: center; padding: 32px 20px;
+      position: relative; z-index: 1; overflow-y: auto;
+    }
+    .profile-card {
+      width: 100%; max-width: 600px; background: var(--bg2); border: 1px solid var(--border);
+      border-radius: var(--radius); overflow: hidden;
+    }
+
+    /* Banner */
+    .banner {
+      height: 120px; position: relative; overflow: hidden;
+      background: linear-gradient(135deg, #7c3aed, #ec4899, #22d3ee);
+    }
+    .banner-overlay {
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(0,0,0,0.05) 10px, rgba(0,0,0,0.05) 20px);
+    }
+
+    /* Avatar area */
+    .avatar-section {
+      display: flex; align-items: flex-end; padding: 0 28px; margin-top: -40px;
+      position: relative; z-index: 2; gap: 20px; padding-bottom: 20px;
+    }
+    .avatar-upload {
+      position: relative; flex-shrink: 0; cursor: pointer;
+    }
+    .avatar-upload .avatar-ring {
+      width: 96px; height: 96px; border-radius: 50%; border: 4px solid var(--bg2);
+      overflow: hidden; position: relative; background: var(--bg3);
+    }
+    .avatar-upload .avatar-ring .avatar-img {
+      width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;
+      font-size: 2rem; font-weight: 700; color: var(--accent2); object-fit: cover;
+    }
+    .avatar-upload .avatar-ring img {
+      width: 100%; height: 100%; object-fit: cover;
+    }
+    .avatar-overlay {
+      position: absolute; inset: 0; border-radius: 50%;
+      background: rgba(0,0,0,0.6); display: flex; flex-direction: column;
+      align-items: center; justify-content: center; opacity: 0;
+      transition: opacity 0.2s; gap: 2px;
+    }
+    .avatar-upload:hover .avatar-overlay { opacity: 1; }
+    .avatar-overlay svg { width: 24px; height: 24px; color: white; }
+    .avatar-overlay span { font-size: 0.7rem; color: white; font-weight: 500; }
+    .avatar-remove {
+      position: absolute; bottom: -2px; right: -2px; width: 28px; height: 28px;
+      border-radius: 50%; background: #ef4444; border: 3px solid var(--bg2);
+      display: none; align-items: center; justify-content: center; cursor: pointer;
+      color: white; font-size: 14px; z-index: 3;
+    }
+    .avatar-remove.visible { display: flex; }
+
+    .user-identity {
+      padding-bottom: 6px; flex: 1; min-width: 0;
+    }
+    .user-identity .display-name {
+      font-size: 1.3rem; font-weight: 700; color: var(--text);
+    }
+    .user-identity .username {
+      font-size: 0.88rem; color: var(--muted);
+    }
+
+    /* Form */
+    .profile-form { padding: 24px 28px; display: flex; flex-direction: column; gap: 22px; }
+
+    .form-section h4 {
+      font-size: 0.8rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.5px; color: var(--muted); margin-bottom: 12px;
+    }
+
+    .field { margin-bottom: 16px; }
+    .field:last-child { margin-bottom: 0; }
+    .field label {
+      display: block; font-size: 0.82rem; font-weight: 600;
+      color: var(--dim); margin-bottom: 6px;
+    }
+    .field .hint {
+      font-size: 0.78rem; color: var(--muted); margin-bottom: 8px;
+    }
+
+    .form-input, .form-textarea, .form-select {
+      width: 100%; padding: 10px 14px; background: var(--bg3);
+      border: 1px solid var(--border-sub); border-radius: var(--radius-xs);
+      color: var(--text); font-size: 0.9rem; font-family: inherit;
+      outline: none; transition: all 0.2s;
+    }
+    .form-input:focus, .form-textarea:focus, .form-select:focus {
+      border-color: var(--accent); box-shadow: 0 0 0 3px var(--glow);
+    }
+    .form-textarea { resize: vertical; min-height: 80px; max-height: 160px; }
+    .form-select { cursor: pointer; appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 12px center;
+    }
+    .form-select option { background: var(--bg3); color: var(--text); }
+
+    .char-count {
+      font-size: 0.75rem; color: var(--muted); text-align: right; margin-top: 4px;
+    }
+
+    /* Status selector */
+    .status-options { display: flex; gap: 8px; flex-wrap: wrap; }
+    .status-option {
+      display: flex; align-items: center; gap: 8px; padding: 8px 14px;
+      background: var(--bg3); border: 1px solid var(--border-sub); border-radius: var(--radius-xs);
+      cursor: pointer; transition: all 0.15s; font-family: inherit;
+      color: var(--dim); font-size: 0.88rem;
+    }
+    .status-option:hover { border-color: var(--accent); color: var(--text); }
+    .status-option.active { border-color: var(--accent); background: rgba(124,58,237,0.1); color: var(--text); }
+    .status-dot-custom {
+      width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
+    }
+
+    /* Buttons */
+    .form-actions {
+      display: flex; gap: 12px; justify-content: flex-end;
+      padding: 20px 28px; border-top: 1px solid var(--border-sub);
+    }
+    .btn {
+      padding: 10px 24px; border: none; border-radius: var(--radius-xs);
+      font-family: inherit; font-size: 0.9rem; font-weight: 600;
+      cursor: pointer; transition: all 0.2s;
+    }
+    .btn-primary { background: var(--accent); color: white; }
+    .btn-primary:hover { background: #6d28d9; box-shadow: 0 4px 16px var(--glow); }
+    .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+    .btn-secondary { background: var(--bg3); color: var(--text); border: 1px solid var(--border-sub); }
+    .btn-secondary:hover { background: var(--hover); border-color: var(--accent); }
+
+    .msg { font-size: 0.85rem; margin-top: 8px; }
+    .msg.success { color: #22c55e; }
+    .msg.error { color: #ef4444; }
+
+    #avatarFile { display: none; }
+  </style>
+</head>
+<body>
+  <div class="top-bar">
+    <button class="back-btn" id="backBtn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
+      </svg>
+      Back
+    </button>
+    <span class="top-bar-title">Edit Profile</span>
+  </div>
+
+  <div class="profile-editor">
+    <div class="profile-card">
+      <div class="banner">
+        <div class="banner-overlay"></div>
+      </div>
+
+      <div class="avatar-section">
+        <div class="avatar-upload" id="avatarUpload">
+          <div class="avatar-ring">
+            <div class="avatar-img" id="avatarDisplay" style="background: linear-gradient(135deg, #22d3ee, #7c3aed); color: white;">U</div>
+          </div>
+          <div class="avatar-overlay">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+              <circle cx="12" cy="13" r="4"/>
+            </svg>
+            <span>Change</span>
+          </div>
+          <div class="avatar-remove" id="avatarRemove" title="Remove avatar">&times;</div>
+        </div>
+        <input type="file" id="avatarFile" accept="image/*">
+        <div class="user-identity">
+          <div class="display-name" id="displayNamePreview">User</div>
+          <div class="username" id="emailPreview">user@email.com</div>
+        </div>
+      </div>
+
+      <div class="profile-form">
+        <div class="form-section">
+          <h4>Profile Info</h4>
+
+          <div class="field">
+            <label>Display Name</label>
+            <input type="text" class="form-input" id="inputName" placeholder="Your display name" maxlength="32">
+            <div class="char-count"><span id="nameCount">0</span>/32</div>
+          </div>
+
+          <div class="field">
+            <label>Bio</label>
+            <p class="hint">Tell people a little about yourself.</p>
+            <textarea class="form-textarea" id="inputBio" placeholder="I'm exploring the nebula..." maxlength="190"></textarea>
+            <div class="char-count"><span id="bioCount">0</span>/190</div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h4>Status</h4>
+          <div class="status-options" id="statusOptions">
+            <button class="status-option active" data-status="online">
+              <span class="status-dot-custom" style="background: #22c55e;"></span> Online
+            </button>
+            <button class="status-option" data-status="idle">
+              <span class="status-dot-custom" style="background: #f59e0b;"></span> Idle
+            </button>
+            <button class="status-option" data-status="dnd">
+              <span class="status-dot-custom" style="background: #ef4444;"></span> Do Not Disturb
+            </button>
+            <button class="status-option" data-status="invisible">
+              <span class="status-dot-custom" style="background: #6b7280;"></span> Invisible
+            </button>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h4>Personal Info</h4>
+
+          <div class="field">
+            <label>Gender</label>
+            <select class="form-select" id="inputGender">
+              <option value="">Prefer not to say</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="non-binary">Non-binary</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <div id="saveMsg" class="msg"></div>
+        <div style="flex:1;"></div>
+        <button class="btn btn-secondary" id="resetBtn">Reset</button>
+        <button class="btn btn-primary" id="saveBtn">Save Changes</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+    const SUPABASE_URL = 'https://hqgpjfqaorvpgdimcily.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_yIg8_s1__WPGVR_BMD4b_w_akKmWH_I';
+    const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) { window.location.href = 'auth.html'; throw new Error('Not auth'); }
+    const user = session.user;
+
+    // Back button
+    document.getElementById('backBtn').addEventListener('click', () => {
+      window.location.href = 'index.html';
+    });
+
+    // Load profile data
+    let avatarData = null;
+
+    async function loadProfile() {
+      const { data: profile } = await supabase.from('profiles').select('*').eq('id', user.id).single();
+      const meta = user.user_metadata || {};
+      const name = meta.full_name || user.email.split('@')[0];
+
+      document.getElementById('inputName').value = meta.full_name || '';
+      document.getElementById('nameCount').textContent = (meta.full_name || '').length;
+      document.getElementById('inputBio').value = profile?.bio || '';
+      document.getElementById('bioCount').textContent = (profile?.bio || '').length;
+      document.getElementById('inputGender').value = profile?.gender || '';
+      document.getElementById('displayNamePreview').textContent = name;
+      document.getElementById('emailPreview').textContent = user.email;
+      document.getElementById('avatarDisplay').textContent = name.charAt(0).toUpperCase();
+
+      if (profile?.avatar_url) {
+        avatarData = profile.avatar_url;
+        const ring = document.querySelector('.avatar-ring');
+        ring.innerHTML = `<img src="${profile.avatar_url}" alt="Avatar">`;
+        document.getElementById('avatarRemove').classList.add('visible');
+      }
+
+      // Set status
+      const savedStatus = profile?.status || 'online';
+      document.querySelectorAll('.status-option').forEach(opt => {
+        opt.classList.toggle('active', opt.dataset.status === savedStatus);
+      });
+    }
+
+    await loadProfile();
+
+    // Name preview & count
+    document.getElementById('inputName').addEventListener('input', (e) => {
+      const val = e.target.value;
+      document.getElementById('nameCount').textContent = val.length;
+      document.getElementById('displayNamePreview').textContent = val || user.email.split('@')[0];
+    });
+
+    // Bio count
+    document.getElementById('inputBio').addEventListener('input', (e) => {
+      document.getElementById('bioCount').textContent = e.target.value.length;
+    });
+
+    // Status selection
+    document.querySelectorAll('.status-option').forEach(opt => {
+      opt.addEventListener('click', () => {
+        document.querySelectorAll('.status-option').forEach(o => o.classList.remove('active'));
+        opt.classList.add('active');
+      });
+    });
+
+    // Avatar upload (click)
+    document.getElementById('avatarUpload').addEventListener('click', () => {
+      document.getElementById('avatarFile').click();
+    });
+
+    document.getElementById('avatarFile').addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        avatarData = ev.target.result;
+        const ring = document.querySelector('.avatar-ring');
+        ring.innerHTML = `<img src="${avatarData}" alt="Avatar">`;
+        document.getElementById('avatarRemove').classList.add('visible');
+      };
+      reader.readAsDataURL(file);
+    });
+
+    // Drag and drop
+    const avatarUpload = document.getElementById('avatarUpload');
+    avatarUpload.addEventListener('dragover', (e) => { e.preventDefault(); e.stopPropagation(); });
+    avatarUpload.addEventListener('drop', (e) => {
+      e.preventDefault(); e.stopPropagation();
+      const file = e.dataTransfer.files[0];
+      if (file && file.type.startsWith('image/')) {
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          avatarData = ev.target.result;
+          const ring = document.querySelector('.avatar-ring');
+          ring.innerHTML = `<img src="${avatarData}" alt="Avatar">`;
+          document.getElementById('avatarRemove').classList.add('visible');
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    // Remove avatar
+    document.getElementById('avatarRemove').addEventListener('click', (e) => {
+      e.stopPropagation();
+      avatarData = null;
+      const ring = document.querySelector('.avatar-ring');
+      const name = document.getElementById('inputName').value || user.email.split('@')[0];
+      ring.innerHTML = `<div class="avatar-img" style="background: linear-gradient(135deg, #22d3ee, #7c3aed); color: white;">${name.charAt(0).toUpperCase()}</div>`;
+      document.getElementById('avatarRemove').classList.remove('visible');
+    });
+
+    // Reset
+    document.getElementById('resetBtn').addEventListener('click', () => { loadProfile(); });
+
+    // Save
+    document.getElementById('saveBtn').addEventListener('click', async () => {
+      const btn = document.getElementById('saveBtn');
+      const msg = document.getElementById('saveMsg');
+      btn.disabled = true;
+      btn.textContent = 'Saving...';
+
+      const fullName = document.getElementById('inputName').value.trim();
+      const bio = document.getElementById('inputBio').value.trim();
+      const gender = document.getElementById('inputGender').value;
+      const status = document.querySelector('.status-option.active')?.dataset.status || 'online';
+
+      // Update auth metadata
+      const { error: metaErr } = await supabase.auth.updateUser({ data: { full_name: fullName } });
+
+      // Upsert profile
+      const { error: profileErr } = await supabase.from('profiles').upsert({
+        id: user.id,
+        email: user.email,
+        full_name: fullName,
+        bio,
+        gender,
+        status,
+        avatar_url: avatarData || '',
+      }, { onConflict: 'id' });
+
+      if (metaErr || profileErr) {
+        msg.textContent = (metaErr || profileErr).message;
+        msg.className = 'msg error';
+      } else {
+        msg.textContent = 'Profile saved!';
+        msg.className = 'msg success';
+      }
+
+      btn.disabled = false;
+      btn.textContent = 'Save Changes';
+      setTimeout(() => msg.className = 'msg', 3000);
+    });
+  </script>
+</body>
+</html>

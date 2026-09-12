@@ -11,42 +11,47 @@
     <!-- Top Header -->
     <header class="top-header">
       <div class="header-logo">
-        <!-- New Logo: Constellation Nebula -->
+        <!-- New Logo: Cosmic Singularity -->
         <svg class="logo" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
           <defs>
-            <linearGradient id="hg1" x1="0%" y1="0%" x2="100%" y2="100%">
+            <linearGradient id="sg1" x1="0%" y1="0%" x2="100%" y2="100%">
               <stop offset="0%" stop-color="#7c3aed"/>
-              <stop offset="100%" stop-color="#ec4899"/>
-            </linearGradient>
-            <linearGradient id="hg2" x1="100%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stop-color="#a855f7"/>
+              <stop offset="50%" stop-color="#ec4899"/>
               <stop offset="100%" stop-color="#22d3ee"/>
             </linearGradient>
-            <filter id="hglow">
-              <feGaussianBlur stdDeviation="1.2" result="blur"/>
+            <radialGradient id="sg2" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#ECEFF4" stop-opacity="0.9"/>
+              <stop offset="40%" stop-color="#a855f7" stop-opacity="0.6"/>
+              <stop offset="100%" stop-color="#7c3aed" stop-opacity="0"/>
+            </radialGradient>
+            <filter id="sglow">
+              <feGaussianBlur stdDeviation="2" result="blur"/>
+              <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+            <filter id="sglow2">
+              <feGaussianBlur stdDeviation="1" result="blur"/>
               <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
             </filter>
           </defs>
-          <!-- Constellation lines -->
-          <line x1="8" y1="8" x2="20" y2="6" stroke="url(#hg2)" stroke-width="0.8" opacity="0.4"/>
-          <line x1="20" y1="6" x2="32" y2="10" stroke="url(#hg1)" stroke-width="0.8" opacity="0.4"/>
-          <line x1="32" y1="10" x2="30" y2="28" stroke="url(#hg2)" stroke-width="0.8" opacity="0.4"/>
-          <line x1="30" y1="28" x2="14" y2="32" stroke="url(#hg1)" stroke-width="0.8" opacity="0.4"/>
-          <line x1="14" y1="32" x2="8" y2="8" stroke="url(#hg2)" stroke-width="0.8" opacity="0.4"/>
-          <line x1="20" y1="6" x2="14" y2="32" stroke="url(#hg1)" stroke-width="0.6" opacity="0.3"/>
-          <line x1="8" y1="8" x2="30" y2="28" stroke="url(#hg2)" stroke-width="0.6" opacity="0.3"/>
-          <!-- Star nodes -->
-          <circle cx="20" cy="20" r="5" fill="url(#hg1)" filter="url(#hglow)"/>
-          <circle cx="20" cy="20" r="2.5" fill="#ECEFF4" opacity="0.9"/>
-          <circle cx="8" cy="8" r="2" fill="#a855f7" filter="url(#hglow)"/>
-          <circle cx="32" cy="10" r="1.8" fill="#ec4899" filter="url(#hglow)"/>
-          <circle cx="30" cy="28" r="2.2" fill="#22d3ee" filter="url(#hglow)"/>
-          <circle cx="14" cy="32" r="1.6" fill="#a855f7" filter="url(#hglow)"/>
-          <circle cx="20" cy="6" r="1.4" fill="#ec4899" filter="url(#hglow)"/>
-          <!-- Tiny background stars -->
-          <circle cx="4" cy="20" r="0.5" fill="#6b7280" opacity="0.5"/>
-          <circle cx="36" cy="20" r="0.5" fill="#6b7280" opacity="0.5"/>
-          <circle cx="20" cy="38" r="0.4" fill="#6b7280" opacity="0.4"/>
+          <!-- Outer ring -->
+          <circle cx="20" cy="20" r="18" fill="none" stroke="url(#sg1)" stroke-width="0.8" opacity="0.2"/>
+          <!-- Orbital paths -->
+          <ellipse cx="20" cy="20" rx="16" ry="6" fill="none" stroke="url(#sg1)" stroke-width="0.6" opacity="0.25" transform="rotate(0 20 20)"/>
+          <ellipse cx="20" cy="20" rx="16" ry="6" fill="none" stroke="url(#sg1)" stroke-width="0.6" opacity="0.25" transform="rotate(60 20 20)"/>
+          <ellipse cx="20" cy="20" rx="16" ry="6" fill="none" stroke="url(#sg1)" stroke-width="0.6" opacity="0.25" transform="rotate(120 20 20)"/>
+          <!-- Core singularity -->
+          <circle cx="20" cy="20" r="8" fill="url(#sg2)" filter="url(#sglow)"/>
+          <circle cx="20" cy="20" r="4" fill="url(#sg1)" filter="url(#sglow2)"/>
+          <circle cx="20" cy="20" r="1.8" fill="#ECEFF4"/>
+          <!-- Orbiting particles -->
+          <circle cx="20" cy="4" r="1.5" fill="#ec4899" filter="url(#sglow2)"/>
+          <circle cx="34" cy="27" r="1.2" fill="#22d3ee" filter="url(#sglow2)"/>
+          <circle cx="6" cy="27" r="1.3" fill="#a855f7" filter="url(#sglow2)"/>
+          <!-- Tiny stars -->
+          <circle cx="4" cy="12" r="0.4" fill="#6b7280" opacity="0.5"/>
+          <circle cx="36" cy="14" r="0.3" fill="#6b7280" opacity="0.4"/>
+          <circle cx="12" cy="38" r="0.3" fill="#6b7280" opacity="0.4"/>
+          <circle cx="28" cy="2" r="0.4" fill="#6b7280" opacity="0.5"/>
         </svg>
         <span class="brand-name">Nebula</span>
       </div>
@@ -70,7 +75,7 @@
             <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
           </svg>
         </button>
-        <div class="header-user">
+        <div class="header-user" id="headerUserBtn" style="cursor: pointer;" title="Your Profile">
           <div class="avatar">
             <div class="avatar-img" id="userAvatar" style="background: linear-gradient(135deg, #22d3ee, #7c3aed); color: white;">U</div>
           </div>
@@ -197,6 +202,11 @@
     document.getElementById('signOutBtn').addEventListener('click', async () => {
       await supabase.auth.signOut();
       window.location.href = 'auth.html';
+    });
+
+    // Click avatar to go to profile editor
+    document.getElementById('headerUserBtn').addEventListener('click', () => {
+      window.location.href = 'profile.html';
     });
 
     // Gradient palette
@@ -418,7 +428,6 @@
 
     settingsBtn.addEventListener('click', () => {
       settingsModal.classList.add('open');
-      loadProfileSettings();
     });
 
     closeSettings.addEventListener('click', () => settingsModal.classList.remove('open'));
@@ -433,29 +442,6 @@
         tab.classList.add('active');
         document.getElementById('panel-' + tab.dataset.tab).classList.add('active');
       });
-    });
-
-    async function loadProfileSettings() {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) return;
-      document.getElementById('settingsName').value = session.user.user_metadata?.full_name || '';
-      document.getElementById('settingsEmail').value = session.user.email || '';
-    }
-
-    document.getElementById('saveProfileBtn').addEventListener('click', async () => {
-      const fullName = document.getElementById('settingsName').value.trim();
-      const { error } = await supabase.auth.updateUser({ data: { full_name: fullName } });
-      const msg = document.getElementById('profileMsg');
-      if (error) {
-        msg.textContent = error.message;
-        msg.className = 'settings-msg error';
-      } else {
-        msg.textContent = 'Profile updated!';
-        msg.className = 'settings-msg success';
-        document.getElementById('userName').textContent = fullName || currentUser.email.split('@')[0];
-        document.getElementById('userAvatar').textContent = fullName.charAt(0).toUpperCase() || currentUser.email.charAt(0).toUpperCase();
-      }
-      setTimeout(() => msg.className = 'settings-msg', 3000);
     });
 
     // Appearance
@@ -513,11 +499,7 @@
           </button>
         </div>
         <nav class="settings-nav">
-          <button class="settings-tab active" data-tab="profile">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-            Profile
-          </button>
-          <button class="settings-tab" data-tab="appearance">
+          <button class="settings-tab active" data-tab="appearance">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
             Appearance
           </button>
@@ -540,15 +522,7 @@
         </nav>
       </div>
       <div class="settings-content">
-        <div class="settings-panel active" id="panel-profile">
-          <h3>Profile</h3>
-          <p class="settings-desc">Manage your personal information.</p>
-          <div class="settings-field"><label>Full Name</label><input type="text" id="settingsName" class="settings-input" placeholder="Your name"></div>
-          <div class="settings-field"><label>Email</label><input type="email" id="settingsEmail" class="settings-input" placeholder="Email" disabled></div>
-          <div id="profileMsg" class="settings-msg"></div>
-          <button class="settings-btn primary" id="saveProfileBtn">Save Changes</button>
-        </div>
-        <div class="settings-panel" id="panel-appearance">
+        <div class="settings-panel active" id="panel-appearance">
           <h3>Appearance</h3>
           <p class="settings-desc">Customize the look of Nebula.</p>
           <div class="settings-field">
