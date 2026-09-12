@@ -423,12 +423,15 @@
           btn.textContent = '...';
           btn.disabled = true;
 
-          await supabase.from('friend_requests').delete().eq('id', reqId);
-          await supabase.from('friends').insert({
+          const { error: delErr } = await supabase.from('friend_requests').delete().eq('id', reqId);
+          console.log('Delete request:', delErr);
+
+          const { error: insErr } = await supabase.from('friends').insert({
             user_id: currentUser.id,
             friend_id: senderId,
             status: 'accepted'
-          }).catch(() => {});
+          });
+          console.log('Insert friend:', insErr);
 
           btn.closest('.conversation').remove();
           loadRequests();
@@ -444,7 +447,8 @@
           btn.textContent = '...';
           btn.disabled = true;
 
-          await supabase.from('friend_requests').delete().eq('id', reqId);
+          const { error: delErr } = await supabase.from('friend_requests').delete().eq('id', reqId);
+          console.log('Delete request:', delErr);
           btn.closest('.conversation').remove();
           loadRequests();
         });
