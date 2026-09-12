@@ -8,59 +8,58 @@
 </head>
 <body>
   <div class="app">
-    <!-- Sidebar -->
-    <aside class="sidebar">
-      <div class="sidebar-header">
-        <div class="logo-area">
-          <!-- Unique Nebula Logo -->
-          <svg class="logo" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#7c3aed"/>
-                <stop offset="100%" stop-color="#ec4899"/>
-              </linearGradient>
-              <linearGradient id="g2" x1="100%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stop-color="#a855f7"/>
-                <stop offset="100%" stop-color="#22d3ee"/>
-              </linearGradient>
-              <filter id="glow">
-                <feGaussianBlur stdDeviation="1.5" result="blur"/>
-                <feMerge>
-                  <feMergeNode in="blur"/>
-                  <feMergeNode in="SourceGraphic"/>
-                </feMerge>
-              </filter>
-            </defs>
-            <circle cx="20" cy="20" r="18" fill="none" stroke="url(#g1)" stroke-width="1.5" opacity="0.3"/>
-            <circle cx="20" cy="20" r="6" fill="url(#g1)" filter="url(#glow)"/>
-            <circle cx="20" cy="20" r="3" fill="#ECEFF4" opacity="0.9"/>
-            <!-- Orbital rings -->
-            <ellipse cx="20" cy="20" rx="14" ry="5" fill="none" stroke="url(#g2)" stroke-width="1.2" opacity="0.5" transform="rotate(-30 20 20)"/>
-            <ellipse cx="20" cy="20" rx="14" ry="5" fill="none" stroke="url(#g1)" stroke-width="1.2" opacity="0.5" transform="rotate(30 20 20)"/>
-            <ellipse cx="20" cy="20" rx="14" ry="5" fill="none" stroke="url(#g2)" stroke-width="1.2" opacity="0.4" transform="rotate(90 20 20)"/>
-            <!-- Stars -->
-            <circle cx="8" cy="8" r="1" fill="#a855f7" opacity="0.8"/>
-            <circle cx="32" cy="10" r="0.8" fill="#ec4899" opacity="0.7"/>
-            <circle cx="30" cy="30" r="1.2" fill="#22d3ee" opacity="0.6"/>
-            <circle cx="6" cy="28" r="0.7" fill="#a855f7" opacity="0.5"/>
-            <circle cx="20" cy="4" r="0.6" fill="#ec4899" opacity="0.6"/>
-          </svg>
-          <span class="brand-name">Nebula</span>
-        </div>
-        <div class="header-actions">
-          <button class="icon-btn" title="New message">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
-            </svg>
-          </button>
-        </div>
+    <!-- Top Header -->
+    <header class="top-header">
+      <div class="header-logo">
+        <!-- New Logo: Constellation Nebula -->
+        <svg class="logo" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="hg1" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#7c3aed"/>
+              <stop offset="100%" stop-color="#ec4899"/>
+            </linearGradient>
+            <linearGradient id="hg2" x1="100%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#a855f7"/>
+              <stop offset="100%" stop-color="#22d3ee"/>
+            </linearGradient>
+            <filter id="hglow">
+              <feGaussianBlur stdDeviation="1.2" result="blur"/>
+              <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+          </defs>
+          <!-- Constellation lines -->
+          <line x1="8" y1="8" x2="20" y2="6" stroke="url(#hg2)" stroke-width="0.8" opacity="0.4"/>
+          <line x1="20" y1="6" x2="32" y2="10" stroke="url(#hg1)" stroke-width="0.8" opacity="0.4"/>
+          <line x1="32" y1="10" x2="30" y2="28" stroke="url(#hg2)" stroke-width="0.8" opacity="0.4"/>
+          <line x1="30" y1="28" x2="14" y2="32" stroke="url(#hg1)" stroke-width="0.8" opacity="0.4"/>
+          <line x1="14" y1="32" x2="8" y2="8" stroke="url(#hg2)" stroke-width="0.8" opacity="0.4"/>
+          <line x1="20" y1="6" x2="14" y2="32" stroke="url(#hg1)" stroke-width="0.6" opacity="0.3"/>
+          <line x1="8" y1="8" x2="30" y2="28" stroke="url(#hg2)" stroke-width="0.6" opacity="0.3"/>
+          <!-- Star nodes -->
+          <circle cx="20" cy="20" r="5" fill="url(#hg1)" filter="url(#hglow)"/>
+          <circle cx="20" cy="20" r="2.5" fill="#ECEFF4" opacity="0.9"/>
+          <circle cx="8" cy="8" r="2" fill="#a855f7" filter="url(#hglow)"/>
+          <circle cx="32" cy="10" r="1.8" fill="#ec4899" filter="url(#hglow)"/>
+          <circle cx="30" cy="28" r="2.2" fill="#22d3ee" filter="url(#hglow)"/>
+          <circle cx="14" cy="32" r="1.6" fill="#a855f7" filter="url(#hglow)"/>
+          <circle cx="20" cy="6" r="1.4" fill="#ec4899" filter="url(#hglow)"/>
+          <!-- Tiny background stars -->
+          <circle cx="4" cy="20" r="0.5" fill="#6b7280" opacity="0.5"/>
+          <circle cx="36" cy="20" r="0.5" fill="#6b7280" opacity="0.5"/>
+          <circle cx="20" cy="38" r="0.4" fill="#6b7280" opacity="0.4"/>
+        </svg>
+        <span class="brand-name">Nebula</span>
       </div>
 
-      <div class="user-profile-bar">
-        <div class="avatar">
-          <div class="avatar-img" id="userAvatar" style="background: linear-gradient(135deg, #22d3ee, #7c3aed); color: white;">U</div>
-        </div>
-        <span class="user-name" id="userName">User</span>
+      <div class="header-search">
+        <svg class="header-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+        <input type="text" class="header-search-input" id="peopleSearch" placeholder="Search people..." autocomplete="off">
+        <div class="search-dropdown" id="searchDropdown"></div>
+      </div>
+
+      <div class="header-actions">
         <button class="icon-btn" id="settingsBtn" title="Settings">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
@@ -71,108 +70,106 @@
             <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
           </svg>
         </button>
-      </div>
-
-      <div class="search-box">
-        <div class="search-wrapper">
-          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-          </svg>
-          <input type="text" class="search-input" placeholder="Search messages...">
+        <div class="header-user">
+          <div class="avatar">
+            <div class="avatar-img" id="userAvatar" style="background: linear-gradient(135deg, #22d3ee, #7c3aed); color: white;">U</div>
+          </div>
+          <span class="header-user-name" id="userName">User</span>
         </div>
       </div>
+    </header>
 
-      <div class="tabs">
-        <button class="tab active">Primary</button>
-        <button class="tab">General</button>
-        <button class="tab">Requests</button>
-      </div>
-
-      <div class="conversations" id="conversationsList">
-        <div class="empty-state" id="emptyFriends">
-          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.3;">
-            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-            <circle cx="9" cy="7" r="4"/>
-            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
-            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-          </svg>
-          <p>No friends yet</p>
-          <span>Add friends to start chatting</span>
+    <div class="app-body">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="tabs">
+          <button class="tab active">Primary</button>
+          <button class="tab">General</button>
+          <button class="tab">Requests</button>
         </div>
-      </div>
-    </aside>
 
-    <!-- Chat Area -->
-    <main class="chat-area">
-      <!-- Empty state when no DM selected -->
-      <div class="chat-empty" id="chatEmpty">
-        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.2;">
-          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-        </svg>
-        <h2>Your messages</h2>
-        <p>Select a conversation to start chatting</p>
-      </div>
+        <div class="conversations" id="conversationsList">
+          <div class="empty-state" id="emptyFriends">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.3;">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+            <p>No friends yet</p>
+            <span>Search for people above to add friends</span>
+          </div>
+        </div>
+      </aside>
 
-      <!-- Active chat view (hidden by default) -->
-      <div class="chat-active" id="chatActive" style="display: none;">
-        <div class="chat-header">
-          <div class="chat-user">
-            <div class="avatar">
-              <div class="avatar-img" id="chatAvatar" style="background: linear-gradient(135deg, #7c3aed, #ec4899); color: white;">A</div>
+      <!-- Chat Area -->
+      <main class="chat-area">
+        <div class="chat-empty" id="chatEmpty">
+          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.2;">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+          </svg>
+          <h2>Your messages</h2>
+          <p>Select a conversation to start chatting</p>
+        </div>
+
+        <div class="chat-active" id="chatActive" style="display: none;">
+          <div class="chat-header">
+            <div class="chat-user">
+              <div class="avatar">
+                <div class="avatar-img" id="chatAvatar" style="background: linear-gradient(135deg, #7c3aed, #ec4899); color: white;">A</div>
+              </div>
+              <div class="chat-user-info">
+                <h3 id="chatName">Select a friend</h3>
+                <div class="chat-user-status">
+                  <span class="status-dot"></span>
+                  <span id="chatStatus">Start a conversation</span>
+                </div>
+              </div>
             </div>
-            <div class="chat-user-info">
-              <h3 id="chatName">Select a friend</h3>
-              <div class="chat-user-status">
-                <span class="status-dot"></span>
-                <span id="chatStatus">Start a conversation</span>
+            <div class="chat-actions">
+              <button class="icon-btn" title="Voice call">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
+                </svg>
+              </button>
+              <button class="icon-btn" title="Video call">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+                </svg>
+              </button>
+              <button class="icon-btn" title="Info">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div class="messages" id="messagesContainer"></div>
+          <div class="chat-input-area">
+            <div class="input-wrapper">
+              <button class="input-btn" title="Attach">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/>
+                </svg>
+              </button>
+              <input type="text" class="msg-input" id="msgInput" placeholder="Message...">
+              <div class="input-actions">
+                <button class="input-btn" title="Emoji">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/>
+                  </svg>
+                </button>
+                <button class="input-btn send-btn" id="sendBtn" title="Send">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                  </svg>
+                </button>
               </div>
             </div>
           </div>
-          <div class="chat-actions">
-            <button class="icon-btn" title="Voice call">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
-              </svg>
-            </button>
-            <button class="icon-btn" title="Video call">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
-              </svg>
-            </button>
-            <button class="icon-btn" title="Info">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/>
-              </svg>
-            </button>
-          </div>
         </div>
-
-        <div class="messages" id="messagesContainer"></div>
-
-        <div class="chat-input-area">
-          <div class="input-wrapper">
-            <button class="input-btn" title="Attach">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/>
-              </svg>
-            </button>
-            <input type="text" class="msg-input" id="msgInput" placeholder="Message...">
-            <div class="input-actions">
-              <button class="input-btn" title="Emoji">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/>
-                </svg>
-              </button>
-              <button class="input-btn send-btn" id="sendBtn" title="Send">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
-                </svg>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </main>
+      </main>
+    </div>
   </div>
 
   <script type="module">
@@ -189,15 +186,12 @@
       throw new Error('Not authenticated');
     }
 
-    const user = session.user;
-    const userName = user.user_metadata?.full_name || user.email.split('@')[0];
+    const currentUser = session.user;
+    const userName = currentUser.user_metadata?.full_name || currentUser.email.split('@')[0];
     const userInitial = userName.charAt(0).toUpperCase();
 
-    // Update user display
-    const userAvatar = document.getElementById('userAvatar');
-    const userNameEl = document.getElementById('userName');
-    if (userAvatar) userAvatar.textContent = userInitial;
-    if (userNameEl) userNameEl.textContent = userName;
+    document.getElementById('userAvatar').textContent = userInitial;
+    document.getElementById('userName').textContent = userName;
 
     // Sign out
     document.getElementById('signOutBtn').addEventListener('click', async () => {
@@ -205,7 +199,7 @@
       window.location.href = 'auth.html';
     });
 
-    // Gradient palette for avatars
+    // Gradient palette
     const gradients = [
       'linear-gradient(135deg, #7c3aed, #ec4899)',
       'linear-gradient(135deg, #22d3ee, #7c3aed)',
@@ -217,16 +211,131 @@
       'linear-gradient(135deg, #06b6d4, #8b5cf6)',
     ];
 
-    // Fetch and render friends
+    function getGradient(str) {
+      let hash = 0;
+      for (let i = 0; i < str.length; i++) hash = str.charCodeAt(i) + ((hash << 5) - hash);
+      return gradients[Math.abs(hash) % gradients.length];
+    }
+
+    // ===== PEOPLE SEARCH =====
+    const searchInput = document.getElementById('peopleSearch');
+    const searchDropdown = document.getElementById('searchDropdown');
+    let searchTimeout;
+
+    async function getFriendAndRequestIds() {
+      const friendIds = new Set();
+      const requestIds = new Map();
+
+      const { data: friends } = await supabase.from('friend_profiles').select('profile_id');
+      if (friends) friends.forEach(f => friendIds.add(f.profile_id));
+
+      const { data: sent } = await supabase.from('friend_requests').select('receiver_id, status').eq('sender_id', currentUser.id);
+      if (sent) sent.forEach(r => requestIds.set(r.receiver_id, r.status));
+
+      const { data: received } = await supabase.from('friend_requests').select('sender_id, status').eq('receiver_id', currentUser.id);
+      if (received) received.forEach(r => {
+        if (!requestIds.has(r.sender_id)) requestIds.set(r.sender_id, r.status);
+      });
+
+      return { friendIds, requestIds };
+    }
+
+    searchInput.addEventListener('input', () => {
+      clearTimeout(searchTimeout);
+      const query = searchInput.value.trim();
+      if (query.length < 2) {
+        searchDropdown.classList.remove('open');
+        return;
+      }
+      searchTimeout = setTimeout(() => searchPeople(query), 300);
+    });
+
+    searchInput.addEventListener('focus', () => {
+      if (searchInput.value.trim().length >= 2) searchDropdown.classList.add('open');
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.header-search')) searchDropdown.classList.remove('open');
+    });
+
+    async function searchPeople(query) {
+      const { data: profiles, error } = await supabase
+        .from('profiles')
+        .select('id, email, full_name')
+        .neq('id', currentUser.id)
+        .or(`full_name.ilike.%${query}%,email.ilike.%${query}%`)
+        .limit(8);
+
+      if (error || !profiles || profiles.length === 0) {
+        searchDropdown.innerHTML = '<div class="search-empty">No people found</div>';
+        searchDropdown.classList.add('open');
+        return;
+      }
+
+      const { friendIds, requestIds } = await getFriendAndRequestIds();
+
+      searchDropdown.innerHTML = profiles.map(p => {
+        const name = p.full_name || p.email.split('@')[0];
+        const initial = name.charAt(0).toUpperCase();
+        const gradient = getGradient(p.id);
+
+        let btnHtml;
+        if (friendIds.has(p.id)) {
+          btnHtml = '<button class="add-friend-btn friends">Friends</button>';
+        } else if (requestIds.has(p.id)) {
+          const status = requestIds.get(p.id);
+          btnHtml = `<button class="add-friend-btn pending">${status === 'pending' ? 'Pending' : status}</button>`;
+        } else {
+          btnHtml = `<button class="add-friend-btn add" data-id="${p.id}">Add Friend</button>`;
+        }
+
+        return `
+          <div class="search-result">
+            <div class="avatar">
+              <div class="avatar-img" style="background: ${gradient}; color: white;">${initial}</div>
+            </div>
+            <div class="search-result-info">
+              <div class="search-result-name">${name}</div>
+              <div class="search-result-email">${p.email}</div>
+            </div>
+            ${btnHtml}
+          </div>
+        `;
+      }).join('');
+
+      searchDropdown.classList.add('open');
+
+      // Bind add friend buttons
+      searchDropdown.querySelectorAll('.add-friend-btn.add').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+          e.stopPropagation();
+          const receiverId = btn.dataset.id;
+          btn.textContent = 'Sending...';
+          btn.disabled = true;
+
+          const { error } = await supabase.from('friend_requests').insert({
+            sender_id: currentUser.id,
+            receiver_id: receiverId,
+            status: 'pending'
+          });
+
+          if (!error) {
+            btn.textContent = 'Pending';
+            btn.className = 'add-friend-btn pending';
+          } else {
+            btn.textContent = 'Add Friend';
+            btn.disabled = false;
+          }
+        });
+      });
+    }
+
+    // ===== FRIENDS LIST =====
     const conversationsList = document.getElementById('conversationsList');
     const emptyFriends = document.getElementById('emptyFriends');
 
     async function loadFriends() {
-      const { data: friends, error } = await supabase
-        .from('friend_profiles')
-        .select('*');
-
-      // Clear existing conversations (keep empty state)
+      const { data: friends } = await supabase.from('friend_profiles').select('*');
       conversationsList.querySelectorAll('.conversation').forEach(c => c.remove());
 
       if (!friends || friends.length === 0) {
@@ -236,10 +345,10 @@
 
       emptyFriends.style.display = 'none';
 
-      friends.forEach((friend, i) => {
+      friends.forEach((friend) => {
         const name = friend.full_name || friend.email.split('@')[0];
         const initial = name.charAt(0).toUpperCase();
-        const gradient = gradients[i % gradients.length];
+        const gradient = getGradient(friend.profile_id);
 
         const conv = document.createElement('div');
         conv.className = 'conversation';
@@ -258,20 +367,13 @@
         conv.addEventListener('click', () => {
           conversationsList.querySelectorAll('.conversation').forEach(c => c.classList.remove('active'));
           conv.classList.add('active');
-
-          // Show chat view
           document.getElementById('chatEmpty').style.display = 'none';
           document.getElementById('chatActive').style.display = 'flex';
-
-          // Update chat header
           document.getElementById('chatAvatar').textContent = initial;
           document.getElementById('chatAvatar').style.background = gradient;
           document.getElementById('chatName').textContent = name;
           document.getElementById('chatStatus').textContent = 'Start a conversation';
-
-          // Clear messages
-          const messagesContainer = document.getElementById('messagesContainer');
-          messagesContainer.innerHTML = '';
+          document.getElementById('messagesContainer').innerHTML = '';
         });
         conversationsList.appendChild(conv);
       });
@@ -295,13 +397,10 @@
     function sendMessage() {
       const text = msgInput.value.trim();
       if (!text) return;
-
       const group = document.createElement('div');
       group.className = 'message-group sent';
-
       const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
       group.innerHTML = `<div class="message sent">${text}</div><div class="message-time">${time}</div>`;
-
       messagesContainer.appendChild(group);
       msgInput.value = '';
       messagesContainer.scrollTop = messagesContainer.scrollHeight;
@@ -309,13 +408,10 @@
 
     sendBtn.addEventListener('click', sendMessage);
     msgInput.addEventListener('keydown', e => {
-      if (e.key === 'Enter' && !e.shiftKey) {
-        e.preventDefault();
-        sendMessage();
-      }
+      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
     });
 
-    // Settings modal
+    // ===== SETTINGS =====
     const settingsBtn = document.getElementById('settingsBtn');
     const settingsModal = document.getElementById('settingsModal');
     const closeSettings = document.getElementById('closeSettings');
@@ -325,15 +421,11 @@
       loadProfileSettings();
     });
 
-    closeSettings.addEventListener('click', () => {
-      settingsModal.classList.remove('open');
-    });
-
+    closeSettings.addEventListener('click', () => settingsModal.classList.remove('open'));
     settingsModal.addEventListener('click', (e) => {
       if (e.target === settingsModal) settingsModal.classList.remove('open');
     });
 
-    // Settings tabs
     document.querySelectorAll('.settings-tab').forEach(tab => {
       tab.addEventListener('click', () => {
         document.querySelectorAll('.settings-tab').forEach(t => t.classList.remove('active'));
@@ -343,13 +435,11 @@
       });
     });
 
-    // Profile settings
     async function loadProfileSettings() {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) return;
-      const user = session.user;
-      document.getElementById('settingsName').value = user.user_metadata?.full_name || '';
-      document.getElementById('settingsEmail').value = user.email || '';
+      document.getElementById('settingsName').value = session.user.user_metadata?.full_name || '';
+      document.getElementById('settingsEmail').value = session.user.email || '';
     }
 
     document.getElementById('saveProfileBtn').addEventListener('click', async () => {
@@ -362,30 +452,27 @@
       } else {
         msg.textContent = 'Profile updated!';
         msg.className = 'settings-msg success';
-        document.getElementById('userName').textContent = fullName || user.email.split('@')[0];
-        document.getElementById('userAvatar').textContent = fullName.charAt(0).toUpperCase() || user.email.charAt(0).toUpperCase();
+        document.getElementById('userName').textContent = fullName || currentUser.email.split('@')[0];
+        document.getElementById('userAvatar').textContent = fullName.charAt(0).toUpperCase() || currentUser.email.charAt(0).toUpperCase();
       }
       setTimeout(() => msg.className = 'settings-msg', 3000);
     });
 
-    // Appearance settings
+    // Appearance
     const accentColors = document.querySelectorAll('.accent-color');
     accentColors.forEach(btn => {
       btn.addEventListener('click', () => {
         accentColors.forEach(b => b.classList.remove('selected'));
         btn.classList.add('selected');
-        const color = btn.dataset.color;
-        document.documentElement.style.setProperty('--accent-primary', color);
-        localStorage.setItem('nebula-accent', color);
+        document.documentElement.style.setProperty('--accent-primary', btn.dataset.color);
+        localStorage.setItem('nebula-accent', btn.dataset.color);
       });
     });
 
     const savedAccent = localStorage.getItem('nebula-accent');
     if (savedAccent) {
       document.documentElement.style.setProperty('--accent-primary', savedAccent);
-      accentColors.forEach(b => {
-        if (b.dataset.color === savedAccent) b.classList.add('selected');
-      });
+      accentColors.forEach(b => { if (b.dataset.color === savedAccent) b.classList.add('selected'); });
     }
 
     document.querySelectorAll('.toggle-switch').forEach(toggle => {
@@ -393,34 +480,23 @@
         toggle.classList.toggle('on');
         localStorage.setItem('nebula-' + toggle.dataset.key, toggle.classList.contains('on'));
       });
-      const saved = localStorage.getItem('nebula-' + toggle.dataset.key);
-      if (saved === 'true') toggle.classList.add('on');
+      if (localStorage.getItem('nebula-' + toggle.dataset.key) === 'true') toggle.classList.add('on');
     });
 
-    // Account settings
+    // Account
     document.getElementById('changePasswordBtn').addEventListener('click', async () => {
       const email = document.getElementById('settingsEmail').value;
       const msg = document.getElementById('accountMsg');
-      const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: window.location.origin
-      });
-      if (error) {
-        msg.textContent = error.message;
-        msg.className = 'settings-msg error';
-      } else {
-        msg.textContent = 'Password reset email sent!';
-        msg.className = 'settings-msg success';
-      }
+      const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo: window.location.origin });
+      if (error) { msg.textContent = error.message; msg.className = 'settings-msg error'; }
+      else { msg.textContent = 'Password reset email sent!'; msg.className = 'settings-msg success'; }
       setTimeout(() => msg.className = 'settings-msg', 3000);
     });
 
     document.getElementById('deleteAccountBtn').addEventListener('click', async () => {
       if (!confirm('Are you sure you want to delete your account? This cannot be undone.')) return;
-      const { error } = await supabase.auth.admin.deleteUser(user.id);
-      if (!error) {
-        await supabase.auth.signOut();
-        window.location.href = 'auth.html';
-      }
+      const { error } = await supabase.auth.admin.deleteUser(currentUser.id);
+      if (!error) { await supabase.auth.signOut(); window.location.href = 'auth.html'; }
     });
   </script>
 
@@ -464,22 +540,14 @@
         </nav>
       </div>
       <div class="settings-content">
-        <!-- Profile -->
         <div class="settings-panel active" id="panel-profile">
           <h3>Profile</h3>
           <p class="settings-desc">Manage your personal information.</p>
-          <div class="settings-field">
-            <label>Full Name</label>
-            <input type="text" id="settingsName" class="settings-input" placeholder="Your name">
-          </div>
-          <div class="settings-field">
-            <label>Email</label>
-            <input type="email" id="settingsEmail" class="settings-input" placeholder="Email" disabled>
-          </div>
+          <div class="settings-field"><label>Full Name</label><input type="text" id="settingsName" class="settings-input" placeholder="Your name"></div>
+          <div class="settings-field"><label>Email</label><input type="email" id="settingsEmail" class="settings-input" placeholder="Email" disabled></div>
           <div id="profileMsg" class="settings-msg"></div>
           <button class="settings-btn primary" id="saveProfileBtn">Save Changes</button>
         </div>
-        <!-- Appearance -->
         <div class="settings-panel" id="panel-appearance">
           <h3>Appearance</h3>
           <p class="settings-desc">Customize the look of Nebula.</p>
@@ -496,99 +564,39 @@
               <button class="accent-color" data-color="#8b5cf6" style="background: #8b5cf6;"></button>
             </div>
           </div>
-          <div class="settings-field">
-            <label>Compact Mode</label>
-            <div class="toggle-switch" data-key="compact"></div>
-          </div>
-          <div class="settings-field">
-            <label>Show Animations</label>
-            <div class="toggle-switch on" data-key="animations"></div>
-          </div>
+          <div class="settings-field"><label>Compact Mode</label><div class="toggle-switch" data-key="compact"></div></div>
+          <div class="settings-field"><label>Show Animations</label><div class="toggle-switch on" data-key="animations"></div></div>
         </div>
-        <!-- Notifications -->
         <div class="settings-panel" id="panel-notifications">
           <h3>Notifications</h3>
           <p class="settings-desc">Control how Nebula notifies you.</p>
-          <div class="settings-field">
-            <label>Message Notifications</label>
-            <div class="toggle-switch on" data-key="notif-messages"></div>
-          </div>
-          <div class="settings-field">
-            <label>Sound Effects</label>
-            <div class="toggle-switch on" data-key="notif-sound"></div>
-          </div>
-          <div class="settings-field">
-            <label>Friend Requests</label>
-            <div class="toggle-switch on" data-key="notif-friends"></div>
-          </div>
-          <div class="settings-field">
-            <label>Typing Indicators</label>
-            <div class="toggle-switch on" data-key="notif-typing"></div>
-          </div>
+          <div class="settings-field"><label>Message Notifications</label><div class="toggle-switch on" data-key="notif-messages"></div></div>
+          <div class="settings-field"><label>Sound Effects</label><div class="toggle-switch on" data-key="notif-sound"></div></div>
+          <div class="settings-field"><label>Friend Requests</label><div class="toggle-switch on" data-key="notif-friends"></div></div>
+          <div class="settings-field"><label>Typing Indicators</label><div class="toggle-switch on" data-key="notif-typing"></div></div>
         </div>
-        <!-- Privacy -->
         <div class="settings-panel" id="panel-privacy">
           <h3>Privacy</h3>
           <p class="settings-desc">Control your visibility and data.</p>
-          <div class="settings-field">
-            <label>Show Online Status</label>
-            <div class="toggle-switch on" data-key="priv-online"></div>
-          </div>
-          <div class="settings-field">
-            <label>Read Receipts</label>
-            <div class="toggle-switch on" data-key="priv-receipts"></div>
-          </div>
-          <div class="settings-field">
-            <label>Allow Profile Visibility</label>
-            <div class="toggle-switch on" data-key="priv-profile"></div>
-          </div>
-          <div class="settings-field">
-            <label>Search Visibility</label>
-            <div class="toggle-switch on" data-key="priv-search"></div>
-          </div>
+          <div class="settings-field"><label>Show Online Status</label><div class="toggle-switch on" data-key="priv-online"></div></div>
+          <div class="settings-field"><label>Read Receipts</label><div class="toggle-switch on" data-key="priv-receipts"></div></div>
+          <div class="settings-field"><label>Allow Profile Visibility</label><div class="toggle-switch on" data-key="priv-profile"></div></div>
+          <div class="settings-field"><label>Search Visibility</label><div class="toggle-switch on" data-key="priv-search"></div></div>
         </div>
-        <!-- Security -->
         <div class="settings-panel" id="panel-security">
           <h3>Security</h3>
           <p class="settings-desc">Protect your account.</p>
-          <div class="settings-field">
-            <label>Two-Factor Authentication</label>
-            <div class="toggle-switch" data-key="sec-2fa"></div>
-          </div>
-          <div class="settings-field">
-            <label>Login Notifications</label>
-            <div class="toggle-switch on" data-key="sec-login"></div>
-          </div>
-          <div class="settings-field">
-            <label>Active Sessions</label>
-            <p class="settings-hint">Manage devices signed into your account.</p>
-            <button class="settings-btn secondary">View Sessions</button>
-          </div>
-          <div class="settings-field">
-            <label>Blocked Users</label>
-            <p class="settings-hint">View and manage blocked accounts.</p>
-            <button class="settings-btn secondary">Manage Blocks</button>
-          </div>
+          <div class="settings-field"><label>Two-Factor Authentication</label><div class="toggle-switch" data-key="sec-2fa"></div></div>
+          <div class="settings-field"><label>Login Notifications</label><div class="toggle-switch on" data-key="sec-login"></div></div>
+          <div class="settings-field"><label>Active Sessions</label><p class="settings-hint">Manage devices signed into your account.</p><button class="settings-btn secondary">View Sessions</button></div>
+          <div class="settings-field"><label>Blocked Users</label><p class="settings-hint">View and manage blocked accounts.</p><button class="settings-btn secondary">Manage Blocks</button></div>
         </div>
-        <!-- Account -->
         <div class="settings-panel" id="panel-account">
           <h3>Account</h3>
           <p class="settings-desc">Manage your account settings.</p>
-          <div class="settings-field">
-            <label>Change Password</label>
-            <p class="settings-hint">We'll send a reset link to your email.</p>
-            <button class="settings-btn secondary" id="changePasswordBtn">Send Reset Link</button>
-          </div>
-          <div class="settings-field">
-            <label>Export Data</label>
-            <p class="settings-hint">Download a copy of your Nebula data.</p>
-            <button class="settings-btn secondary">Request Export</button>
-          </div>
-          <div class="settings-field danger-zone">
-            <label>Delete Account</label>
-            <p class="settings-hint">Permanently delete your account and all data.</p>
-            <button class="settings-btn danger" id="deleteAccountBtn">Delete Account</button>
-          </div>
+          <div class="settings-field"><label>Change Password</label><p class="settings-hint">We'll send a reset link to your email.</p><button class="settings-btn secondary" id="changePasswordBtn">Send Reset Link</button></div>
+          <div class="settings-field"><label>Export Data</label><p class="settings-hint">Download a copy of your Nebula data.</p><button class="settings-btn secondary">Request Export</button></div>
+          <div class="settings-field danger-zone"><label>Delete Account</label><p class="settings-hint">Permanently delete your account and all data.</p><button class="settings-btn danger" id="deleteAccountBtn">Delete Account</button></div>
           <div id="accountMsg" class="settings-msg"></div>
         </div>
       </div>
