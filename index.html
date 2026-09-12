@@ -88,9 +88,9 @@
       <!-- Sidebar -->
       <aside class="sidebar">
         <div class="tabs">
-          <button class="tab active">Primary</button>
-          <button class="tab">General</button>
-          <button class="tab">Requests</button>
+          <button class="tab active" data-tab="primary">Primary</button>
+          <button class="tab" data-tab="general">General</button>
+          <button class="tab" data-tab="requests" id="requestsTab">Requests <span class="tab-badge" id="requestsBadge" style="display:none;">0</span></button>
         </div>
 
         <div class="conversations" id="conversationsList">
@@ -103,6 +103,18 @@
             </svg>
             <p>No friends yet</p>
             <span>Search for people above to add friends</span>
+          </div>
+        </div>
+
+        <div class="conversations" id="requestsList" style="display: none;">
+          <div class="empty-state" id="emptyRequests">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.3;">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+              <circle cx="8.5" cy="7" r="4"/>
+              <line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/>
+            </svg>
+            <p>No pending requests</p>
+            <span>Friend requests will appear here</span>
           </div>
         </div>
       </aside>
@@ -340,6 +352,97 @@
       });
     }
 
+    // ===== FRIEND REQUESTS =====
+    const requestsListEl = document.getElementById('requestsList');
+    const emptyRequests = document.getElementById('emptyRequests');
+    const requestsBadge = document.getElementById('requestsBadge');
+
+    async function loadRequests() {
+      const { data: requests } = await supabase
+        .from('friend_requests')
+        .select('*, sender:profiles!friend_requests_sender_id_fkey(id, email, full_name)')
+        .eq('receiver_id', currentUser.id)
+        .eq('status', 'pending');
+
+      requestsListEl.querySelectorAll('.conversation').forEach(c => c.remove());
+
+      if (!requests || requests.length === 0) {
+        emptyRequests.style.display = 'flex';
+        requestsBadge.style.display = 'none';
+        return;
+      }
+
+      emptyRequests.style.display = 'none';
+      requestsBadge.textContent = requests.length;
+      requestsBadge.style.display = '';
+
+      requests.forEach((req) => {
+        const sender = req.sender;
+        const name = sender.full_name || sender.email.split('@')[0];
+        const initial = name.charAt(0).toUpperCase();
+        const gradient = getGradient(sender.id);
+
+        const conv = document.createElement('div');
+        conv.className = 'conversation';
+        conv.innerHTML = `
+          <div class="avatar">
+            <div class="avatar-img" style="background: ${gradient}; color: white;">${initial}</div>
+          </div>
+          <div class="conversation-info">
+            <div class="conversation-name">${name}</div>
+            <div class="conversation-preview">sent you a friend request</div>
+          </div>
+          <div class="conversation-meta" style="flex-direction: row; gap: 6px;">
+            <button class="req-btn accept" data-id="${req.id}" data-sender="${sender.id}" data-name="${name}" data-gradient="${gradient}">Accept</button>
+            <button class="req-btn reject" data-id="${req.id}">Decline</button>
+          </div>
+        `;
+        requestsListEl.appendChild(conv);
+      });
+
+      // Accept buttons
+      requestsListEl.querySelectorAll('.req-btn.accept').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+          e.stopPropagation();
+          const reqId = btn.dataset.id;
+          const senderId = btn.dataset.sender;
+          const senderName = btn.dataset.name;
+          const senderGradient = btn.dataset.gradient;
+          btn.textContent = '...';
+          btn.disabled = true;
+
+          // Delete the request
+          await supabase.from('friend_requests').delete().eq('id', reqId);
+
+          // Create friendship
+          await supabase.from('friends').insert({
+            user_id: currentUser.id,
+            friend_id: senderId,
+            status: 'accepted'
+          });
+
+          // Remove from requests list
+          btn.closest('.conversation').remove();
+          loadRequests();
+          loadFriends();
+        });
+      });
+
+      // Reject buttons
+      requestsListEl.querySelectorAll('.req-btn.reject').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+          e.stopPropagation();
+          const reqId = btn.dataset.id;
+          btn.textContent = '...';
+          btn.disabled = true;
+
+          await supabase.from('friend_requests').delete().eq('id', reqId);
+          btn.closest('.conversation').remove();
+          loadRequests();
+        });
+      });
+    }
+
     // ===== FRIENDS LIST =====
     const conversationsList = document.getElementById('conversationsList');
     const emptyFriends = document.getElementById('emptyFriends');
@@ -390,12 +493,24 @@
     }
 
     await loadFriends();
+    await loadRequests();
 
     // Tab switching
+    const conversationsList = document.getElementById('conversationsList');
+    const requestsList = document.getElementById('requestsList');
+
     document.querySelectorAll('.tab').forEach(tab => {
       tab.addEventListener('click', () => {
         document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
         tab.classList.add('active');
+        const tabName = tab.dataset.tab;
+        if (tabName === 'requests') {
+          conversationsList.style.display = 'none';
+          requestsList.style.display = '';
+        } else {
+          conversationsList.style.display = '';
+          requestsList.style.display = 'none';
+        }
       });
     });
 
