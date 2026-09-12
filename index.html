@@ -413,22 +413,16 @@
           e.stopPropagation();
           const reqId = btn.dataset.id;
           const senderId = btn.dataset.sender;
-          const senderName = btn.dataset.name;
-          const senderGradient = btn.dataset.gradient;
           btn.textContent = '...';
           btn.disabled = true;
 
-          // Delete the request
           await supabase.from('friend_requests').delete().eq('id', reqId);
-
-          // Create friendship
           await supabase.from('friends').insert({
             user_id: currentUser.id,
             friend_id: senderId,
             status: 'accepted'
-          });
+          }).catch(() => {});
 
-          // Remove from requests list
           btn.closest('.conversation').remove();
           loadRequests();
           loadFriends();
