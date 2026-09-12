@@ -282,13 +282,10 @@
       });
     });
 
-    // Auto-scroll messages
-    const messages = document.querySelector('.messages');
-    messages.scrollTop = messages.scrollHeight;
-
     // Send message
-    const msgInput = document.querySelector('.msg-input');
-    const sendBtn = document.querySelector('.send-btn');
+    const msgInput = document.getElementById('msgInput');
+    const sendBtn = document.getElementById('sendBtn');
+    const messagesContainer = document.getElementById('messagesContainer');
 
     function sendMessage() {
       const text = msgInput.value.trim();
@@ -300,12 +297,9 @@
       const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
       group.innerHTML = `<div class="message sent">${text}</div><div class="message-time">${time}</div>`;
 
-      const typing = document.querySelector('.typing-indicator');
-      if (typing) typing.closest('.message-group').remove();
-
-      messages.appendChild(group);
+      messagesContainer.appendChild(group);
       msgInput.value = '';
-      messages.scrollTop = messages.scrollHeight;
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
     }
 
     sendBtn.addEventListener('click', sendMessage);
