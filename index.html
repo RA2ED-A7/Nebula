@@ -209,6 +209,13 @@
     const userInitial = userName.charAt(0).toUpperCase();
 
     document.getElementById('userAvatar').textContent = userInitial;
+
+    // Load user profile avatar
+    const { data: myProfile } = await supabase.from('profiles').select('avatar_url, full_name').eq('id', currentUser.id).single();
+    if (myProfile?.avatar_url) {
+      document.getElementById('userAvatar').innerHTML = `<img src="${myProfile.avatar_url}" alt="Avatar" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+    }
+    if (myProfile?.full_name) document.getElementById('userName').textContent = myProfile.full_name;
     document.getElementById('userName').textContent = userName;
 
     // Sign out
@@ -447,6 +454,8 @@
     // ===== FRIENDS LIST =====
     const conversationsList = document.getElementById('conversationsList');
     const emptyFriends = document.getElementById('emptyFriends');
+    let activeChatFriendId = null;
+    let activeChatFriendName = null;
 
     async function loadFriends() {
       const { data: friends } = await supabase.from('friend_profiles').select('*');
@@ -466,6 +475,7 @@
 
         const conv = document.createElement('div');
         conv.className = 'conversation';
+        conv.dataset.friendId = friend.profile_id;
         conv.innerHTML = `
           <div class="avatar">
             <div class="avatar-img" style="background: ${gradient}; color: white;">${initial}</div>
@@ -475,20 +485,37 @@
             <div class="conversation-preview">Start a conversation</div>
           </div>
           <div class="conversation-meta">
-            <span class="conversation-time">New</span>
+            <button class="unfriend-btn" title="Unfriend" data-id="${friend.profile_id}">&times;</button>
           </div>
         `;
-        conv.addEventListener('click', () => {
+
+        conv.querySelector('.conversation-info').addEventListener('click', () => {
           conversationsList.querySelectorAll('.conversation').forEach(c => c.classList.remove('active'));
           conv.classList.add('active');
+          activeChatFriendId = friend.profile_id;
+          activeChatFriendName = name;
           document.getElementById('chatEmpty').style.display = 'none';
           document.getElementById('chatActive').style.display = 'flex';
           document.getElementById('chatAvatar').textContent = initial;
           document.getElementById('chatAvatar').style.background = gradient;
           document.getElementById('chatName').textContent = name;
-          document.getElementById('chatStatus').textContent = 'Start a conversation';
-          document.getElementById('messagesContainer').innerHTML = '';
+          document.getElementById('chatStatus').textContent = 'Online';
+          loadMessages();
         });
+
+        conv.querySelector('.unfriend-btn').addEventListener('click', async (e) => {
+          e.stopPropagation();
+          if (!confirm(`Unfriend ${name}?`)) return;
+          await supabase.from('friends').delete().eq('user_id', currentUser.id).eq('friend_id', friend.profile_id);
+          await supabase.from('friends').delete().eq('user_id', friend.profile_id).eq('friend_id', currentUser.id);
+          if (activeChatFriendId === friend.profile_id) {
+            activeChatFriendId = null;
+            document.getElementById('chatEmpty').style.display = '';
+            document.getElementById('chatActive').style.display = 'none';
+          }
+          loadFriends();
+        });
+
         conversationsList.appendChild(conv);
       });
     }
@@ -519,16 +546,52 @@
     const sendBtn = document.getElementById('sendBtn');
     const messagesContainer = document.getElementById('messagesContainer');
 
-    function sendMessage() {
-      const text = msgInput.value.trim();
-      if (!text) return;
-      const group = document.createElement('div');
-      group.className = 'message-group sent';
-      const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-      group.innerHTML = `<div class="message sent">${text}</div><div class="message-time">${time}</div>`;
-      messagesContainer.appendChild(group);
-      msgInput.value = '';
+    async function loadMessages() {
+      if (!activeChatFriendId) return;
+      messagesContainer.innerHTML = '';
+
+      const minId = [currentUser.id, activeChatFriendId].sort().join('_');
+      const maxId = [currentUser.id, activeChatFriendId].sort().reverse().join('_');
+
+      const { data: msgs } = await supabase
+        .from('messages')
+        .select('*')
+        .or(`and(sender_id.eq.${currentUser.id},receiver_id.eq.${activeChatFriendId}),and(sender_id.eq.${activeChatFriendId},receiver_id.eq.${currentUser.id})`)
+        .order('created_at', { ascending: true });
+
+      if (!msgs) return;
+
+      msgs.forEach(msg => {
+        const isSent = msg.sender_id === currentUser.id;
+        const time = new Date(msg.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        const group = document.createElement('div');
+        group.className = `message-group ${isSent ? 'sent' : 'received'}`;
+        group.innerHTML = `<div class="message ${isSent ? 'sent' : 'received'}">${msg.content}</div><div class="message-time">${time}</div>`;
+        messagesContainer.appendChild(group);
+      });
+
       messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+
+    async function sendMessage() {
+      const text = msgInput.value.trim();
+      if (!text || !activeChatFriendId) return;
+
+      const { error } = await supabase.from('messages').insert({
+        sender_id: currentUser.id,
+        receiver_id: activeChatFriendId,
+        content: text
+      });
+
+      if (!error) {
+        const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        const group = document.createElement('div');
+        group.className = 'message-group sent';
+        group.innerHTML = `<div class="message sent">${text}</div><div class="message-time">${time}</div>`;
+        messagesContainer.appendChild(group);
+        msgInput.value = '';
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+      }
     }
 
     sendBtn.addEventListener('click', sendMessage);
