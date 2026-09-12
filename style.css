@@ -149,6 +149,39 @@ body::before {
   box-shadow: var(--shadow-glow);
 }
 
+.user-profile-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 24px;
+  border-bottom: 1px solid var(--border-subtle);
+  background: rgba(18, 18, 31, 0.5);
+}
+
+.user-profile-bar .avatar-img {
+  width: 34px;
+  height: 34px;
+  font-size: 0.85rem;
+}
+
+.user-name {
+  flex: 1;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.sign-out-btn {
+  background: transparent;
+  color: var(--text-muted);
+}
+
+.sign-out-btn:hover {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+  box-shadow: none;
+}
+
 .search-box {
   padding: 16px 24px;
 }
